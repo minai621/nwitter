@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {dbService} from "../fbase";
+import Nweet from "../component/Nweet";
 
 type IHome = {
     userObj: any;
@@ -18,14 +19,6 @@ const Home:React.FC<IHome> = ({ userObj }) => {
           creator: userObj.uid,
       });
       setNweet("");
-    };
-
-    const getNweets = async () => {
-        const dbNweets = await dbService.collection("nweets").get();
-        dbNweets.forEach((document) => {
-            const nweetObject = {...document.data(), id: document.id};
-            setNweets((prev) => [document.data(), ...prev]);
-        });
     }
 
     const onChange = (event: any) => {
@@ -37,7 +30,13 @@ const Home:React.FC<IHome> = ({ userObj }) => {
     };
 
     useEffect(()=> {
-        getNweets();
+        dbService.collection("nweets").onSnapshot((snapshot) => {
+            const newArray = snapshot.docs.map((document) => ({
+                id: document.id,
+                ...document.data(),
+            }));
+            setNweets(newArray);
+        })
     }, []);
 
     return (
@@ -52,9 +51,11 @@ const Home:React.FC<IHome> = ({ userObj }) => {
             <input type="submit" value="Nweet"/>
             <div>
                 {nweets.map((nweet) => (
-                    <div key={nweet.id}>
-                        <h4>{nweet.text}</h4>
-                    </div>
+                    <Nweet
+                        key={nweet.id}
+                        nweetObj={nweet}
+                        isOwner={nweet.creatorId === userObj.uid}
+                    />
                 ))}
             </div>
         </form>
