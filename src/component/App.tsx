@@ -22,7 +22,6 @@ const App:React.FC = () => {
     return (
         <>
             {init ? <AppRouter isLoggedIn={isLoggedIn} userObj={userObj}/> : "initializing..."}
-            <footer>&copy; {new Date().getFullYear()} Nwitter</footer>
         </>
     )
 };
