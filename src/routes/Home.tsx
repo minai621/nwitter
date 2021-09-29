@@ -33,7 +33,6 @@ const Home:React.FC<IHome> = ({ userObj }) => {
         });
         setNweet("");
         setAttachment("");
-        console.log(nweet.creatorId, nweet.creatorId, userObj.uid)
     };
 
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,7 +86,10 @@ const Home:React.FC<IHome> = ({ userObj }) => {
                 </div>
             )}
             <div>
-                {nweets.map((nweet) => (
+                {nweets.filter(
+                    nweet =>
+                        nweet.text != ""
+                ).map((nweet) => (
                     <Nweet
                         key={nweet.id}
                         nweetObj={nweet}

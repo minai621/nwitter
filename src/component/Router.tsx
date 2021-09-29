@@ -7,13 +7,16 @@ import Profile from "../routes/Profile";
 type IRoute = {
     isLoggedIn: boolean;
     userObj: Object;
+    refreshUser: Function;
 }
 
 
-const AppRouter:React.FC<IRoute> = ({ isLoggedIn, userObj }) => {
+const AppRouter:React.FC<IRoute> = ({ isLoggedIn, userObj, refreshUser }) => {
     return (
         <BrowserRouter>
-            {isLoggedIn && <Navigation />}
+            {isLoggedIn && <Navigation
+                userObj={userObj}
+            />}
             <Switch>
                 {
                     isLoggedIn ? (
@@ -22,7 +25,7 @@ const AppRouter:React.FC<IRoute> = ({ isLoggedIn, userObj }) => {
                                 <Home userObj={userObj}/>
                             </Route>
                             <Route exact path="/profile">
-                                <Profile />
+                                <Profile userObj={userObj} refreshUser={refreshUser}/>
                             </Route>
                             </>
                     ) : (
