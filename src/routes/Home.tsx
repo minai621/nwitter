@@ -53,13 +53,17 @@ const Home:React.FC<IHome> = ({ userObj }) => {
             const result = finishedEvent.target?.result;
             setAttachment(result);
         };
-        reader.readAsDataURL(theFile);
+        if(Boolean(theFile)) {
+            reader.readAsDataURL(theFile);
+        }
     }
 
     const onClearAttachment = () => setAttachment("");
 
     useEffect(()=> {
-        dbService.collection("nweets").onSnapshot((snapshot) => {
+        dbService.collection("nweets")
+            .orderBy("createAt", "desc")
+            .onSnapshot((snapshot) => {
             const newArray = snapshot.docs.map((document) => ({
                 id: document.id,
                 ...document.data(),
