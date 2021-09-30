@@ -4,24 +4,28 @@ import Auth from "../routes/Auth";
 import Navigation from "./Navigation";
 import Profile from "../routes/Profile";
 
-type Logged = {
+type IRoute = {
     isLoggedIn: boolean;
+    userObj: Object;
+    refreshUser: Function;
 }
 
 
-const AppRouter:React.FC<Logged> = ({ isLoggedIn }) => {
+const AppRouter:React.FC<IRoute> = ({ isLoggedIn, userObj, refreshUser }) => {
     return (
         <BrowserRouter>
-            {isLoggedIn && <Navigation />}
+            {isLoggedIn && <Navigation
+                userObj={userObj}
+            />}
             <Switch>
                 {
                     isLoggedIn ? (
                         <>
                             <Route exact path="/">
-                                <Home />
+                                <Home userObj={userObj}/>
                             </Route>
                             <Route exact path="/profile">
-                                <Profile />
+                                <Profile userObj={userObj} refreshUser={refreshUser}/>
                             </Route>
                             </>
                     ) : (

@@ -1,6 +1,12 @@
 import {Link} from "react-router-dom";
+import {InvalidEvent} from "react";
 
-const Navigation = () => {
+type INavigation = {
+    userObj: any;
+};
+
+const Navigation: React.FC<INavigation> = ({ userObj }) => {
+
     return (
         <nav>
             <ul>
@@ -8,7 +14,7 @@ const Navigation = () => {
                     <Link to="/">Home</Link>
                 </li>
                 <li>
-                    <Link to="/profile">My Profile</Link>
+                    <Link to="/profile">{ userObj.displayName }</Link>
                 </li>
             </ul>
         </nav>
